@@ -1,9 +1,15 @@
 # CycleGAN on Text Sentiment Transfer
   Unsupervised learning sentiment transfer from negative to positive and vice versa.  
 
+## Envirnment
+
+  - Python3.8
+  - Tensorflow 1.14
+  - macOS Catalina 10.15.5
+
 
 ## How to run
-  1. activate virtualenv `source tf1/bin/activate`
+  1. activate virtualenv `source tf1/bin/activate` ***too large, not pushed, you can just create one with tf 1.14***
   2. cd to **CycleGAN-sentiment-transfer-for-Chinese**
   3. run test code `python3 main.py -test -model_dir cur_best2`
   4. type your sentence. example `i hate you`
