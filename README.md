@@ -15,6 +15,11 @@
   4. type your sentence. example `i hate you`
   5. type `quit` for exit
 
+## Original Dataset
+
+https://raw.githubusercontent.com/yaushian/CycleGAN-sentiment-transfer/master/data/feature_twitter.txt
+
+
 ## PTT data preprocessing
 
 if you haven't processed your own dataset yet, follow the steps
