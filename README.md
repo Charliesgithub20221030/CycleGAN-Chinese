@@ -8,14 +8,22 @@
   - macOS Catalina 10.15.5
 
 
-## How to run
+## How to run test
   1. activate virtualenv `source tf1/bin/activate` ***too large, not pushed, you can just create one with tf 1.14***
   2. cd to **CycleGAN-sentiment-transfer-for-Chinese**
   3. run test code `python3 main.py -test -model_dir cur_best2`
   4. type your sentence. example `i hate you`
   5. type `quit` for exit
 
+## PTT data preprocessing
 
+if you haven't processed your own dataset yet, follow the steps
+
+1.  download PPT dataset from https://drive.google.com/file/d/1VkYhyA6bIEn3QYjo0Srs8bkdb9yJliwC/view
+2. extract PTT_dataset folder to `CycleGAN-sentiment-transfer-for-Chinese/data/PTT_dataset`
+3. download jieba diction for traditional Chinese from https://github.com/fxsjy/jieba/raw/master/extra_dict/dict.txt.big, and put `dict.txt.big.txt` to `data` folder
+4. run `python3 data_preprocessor_ptt.py`
+5. check `data` folder
 
 
 ## Update

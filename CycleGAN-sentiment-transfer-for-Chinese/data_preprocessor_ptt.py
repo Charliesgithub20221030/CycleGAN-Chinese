@@ -5,7 +5,7 @@ import re
 import os
 
 data_path = 'data'
-ptt_dataset = 'data/PTT_dataset'
+ptt_dataset = os.path.join(data_path , 'PTT_dataset')
 
 jieba.set_dictionary(os.path.join(data_path, 'dict.txt.big.txt'))
 jieba.initialize()
