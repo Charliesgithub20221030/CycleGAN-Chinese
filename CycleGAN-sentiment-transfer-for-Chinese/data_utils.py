@@ -17,7 +17,7 @@ class data_utils():
         # dictionary source
         self.set_dictionary(args.dict)  # dictionary json file
 
-        self.set_word2vec_model('word2vec_model/model')
+        self.set_word2vec_model('word2vec_model/model_ptt')
 
     def set_dictionary(self, dict_file):
         if os.path.exists(dict_file):
