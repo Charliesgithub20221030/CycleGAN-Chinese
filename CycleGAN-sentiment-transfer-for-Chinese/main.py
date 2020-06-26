@@ -1,6 +1,13 @@
 import argparse
 from cycle_gan import cycle_gan
 import tensorflow as tf
+# turn off FutureWarning
+import warnings
+from tensorflow.python.util import deprecation
+# deprecation._PRINT_DEPRECATION_WARNINGS = False
+# os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+warnings.simplefilter(action='ignore', category=FutureWarning)
+tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
 
 def parse():
@@ -14,8 +21,8 @@ def parse():
                         default=36, type=int, help='batch size')
     parser.add_argument('-latent_dim', '--latent_dim',
                         default=100, type=int, help='laten size')
-    parser.add_argument('-data_dir', '--data_dir',
-                        default='chinese_data', help='data dir')
+    parser.add_argument('-data_source', '--data_source',
+                        default='data/feature_twitter_1000.txt', help='data source txt')
     parser.add_argument('-saving_step', '--saving_step',
                         default=1000, type=int, help='saving step')
     parser.add_argument('-num_steps', '--num_steps',
@@ -31,6 +38,8 @@ def parse():
     parser.add_argument('-file_test', action='store_true',
                         help='whether test input file')
     parser.add_argument('-mode', default='all', help='type pretrain or all')
+    parser.add_argument('-dict', '--dict', default='word2vec_model/dictionary.json',
+                        help='dictionary for tokenization')
     args = parser.parse_args()
     return args
 

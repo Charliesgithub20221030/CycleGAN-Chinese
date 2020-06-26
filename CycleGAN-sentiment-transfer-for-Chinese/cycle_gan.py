@@ -79,6 +79,7 @@ class cycle_gan():
                                    false_sample_score) + 10.0*gradient_penalty
 
             return discriminator_loss
+
         def get_L2_loss(targets, outputs):
             assert targets.get_shape() == outputs.get_shape()
 
@@ -87,6 +88,7 @@ class cycle_gan():
                 (reduce(lambda x, y: x*y, shape))
 
             return loss
+
         def get_gradient_penalty(generator_outputs_embedded, real_sample_embedded, dis_fn):
 
             # set gradient penalty
@@ -335,7 +337,7 @@ class cycle_gan():
                 [self.pretrain_X2Y_op, self.pretrain_Y2X_op, self.pretrain_X2Y_loss, self.pretrain_Y2X_loss, self.Y2X_test_outputs], feed_dict=feed_dict)
             cur_loss += (loss_X2Y + loss_Y2X) / 2.0
 
-            if step % (summary_step) == 0:
+            if step % (summary_step) == 0:  # print generator loss for every 50 steps
                 print(self.utils.vec2sent(tt[0]))
                 print('{step}: generator_loss: {loss}'.format(
                     step=step, loss=cur_loss/summary_step))
@@ -345,7 +347,7 @@ class cycle_gan():
                 saver.save(self.sess, model_path, global_step=step)
                 saver.restore(self.sess, tf.train.latest_checkpoint(model_dir))
 
-            if step >= self.num_steps:
+            if step >= self.num_steps:  # default num_step 1000000
                 break
 
     def train(self):
@@ -451,7 +453,7 @@ class cycle_gan():
                 self.generator_saver.save(
                     self.sess, gen_model_path, global_step=step)
 
-            if step >= self.num_steps:
+            if step >= self.num_steps:  # default num_step 1000000
                 break
 
     def test(self):

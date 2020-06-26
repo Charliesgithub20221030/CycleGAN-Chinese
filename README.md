@@ -1,11 +1,29 @@
 # CycleGAN on Text Sentiment Transfer
   Unsupervised learning sentiment transfer from negative to positive and vice versa.  
 
-## Envirnment
+## Information of Project
+
+
+### Envirnment
 
   - Python3.8
   - Tensorflow 1.14
   - macOS Catalina 10.15.5
+### Architecture
+```mermaid
+graph LR;
+    raw-->|data/feature_ptt.txt|sentence;
+    sentence-->|split|word;
+    word-->|Word2Vec|200d_vector;
+    200d_vector-->|stored in|data_utils.word_array;
+
+
+```
+```mermaid
+graph LR;
+    word-->|word_id_dict|id;
+id-->|word_array|vector;
+```
 
 
 ## How to run test
