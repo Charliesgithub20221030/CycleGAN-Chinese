@@ -10,7 +10,7 @@
   - Tensorflow 1.14
   - macOS Catalina 10.15.5
 ### Architecture
-```mermaid
+```mermaid=
 graph LR;
     raw-->|data/feature_ptt.txt|sentence;
     sentence-->|split|word;
@@ -19,7 +19,7 @@ graph LR;
 
 
 ```
-```mermaid
+```mermaid=
 graph LR;
     word-->|word_id_dict|id;
 id-->|word_array|vector;
