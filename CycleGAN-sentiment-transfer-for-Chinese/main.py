@@ -7,7 +7,7 @@ from tensorflow.python.util import deprecation
 # deprecation._PRINT_DEPRECATION_WARNINGS = False
 # os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 warnings.simplefilter(action='ignore', category=FutureWarning)
-tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
+#tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
 
 def parse():
@@ -40,12 +40,14 @@ def parse():
     parser.add_argument('-mode', default='all', help='type pretrain or all')
     parser.add_argument('-dict', '--dict', default='word2vec_model/dictionary.json',
                         help='dictionary for tokenization')
+    parser.add_argument('-feature_file', '--feature_file',
+                        default=False, help='prediction batch from feature file')
     args = parser.parse_args()
     return args
 
 
 def run(args):
-    sess = tf.compat.v1.Session()
+    sess = tf.Session()
     if args.test:
         args.mode = 'test'
     model = cycle_gan(args, sess)

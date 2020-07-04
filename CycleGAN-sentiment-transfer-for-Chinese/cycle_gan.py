@@ -7,11 +7,13 @@ from functools import reduce
 import tensorflow as tf
 import numpy as np
 import os
+import jieba
 
 
 class cycle_gan():
 
     def __init__(self, args, sess):
+        self.args = args
 
         self.sess = sess
         # mode can be training the whole model, autoencoder, gan, discriminator
@@ -464,26 +466,70 @@ class cycle_gan():
             self.sess, tf.train.latest_checkpoint(gen_model_dir))
         print('please enter one negative sentence')
 
-        while(sentence):
-            try:
-                sentence = input('>')
-                if sentence == 'quit':
-                    break
-                #sentence = sentence.split(':')[1]
-                input_sent_vec = self.utils.sent2id(sentence)
-                print(input_sent_vec)
-                sent_vec = np.zeros(
-                    (self.batch_size, self.sequence_length), dtype=np.int32)
-                sent_vec[0] = input_sent_vec
+        if self.args.feature_file:
+            import pandas as pd
+            import random
+            print('start process feature files (only choose 1000 randomly)')
+            lines = []
+            with open(self.args.feature_file) as f:
+                for line in f.readlines():
+                    if not ' +++$+++ ' in line:
+                        continue
+                    lines.append(line.replace('\n', '').split(' +++$+++ ')[1])
 
-                feed_dict = {
-                    self.X2Y_inputs: sent_vec
-                }
-                preds = self.sess.run([self.X2Y_test_outputs], feed_dict)
-                pred_sent = self.utils.vec2sent(preds[0][0])
-                print(pred_sent)
-            except Exception as e:
-                print(e.message)
+            random.shuffle(lines)
+            lines = lines[:1000]
+            for i, line in enumerate(lines):
+                sentence = line
+                try:
+                    #print(f'processing {i} {line} ... ')
+                    chinesePat = '[\u4e00-\u9fff]+'
+                    if len(re.findall(chinesePat, sentence)) > 0:
+                        sentence = ' '.join(list(jieba.cut(sentence)))
+                    input_sent_vec = self.utils.sent2id(sentence)
+                    sent_vec = np.zeros(
+                        (self.batch_size, self.sequence_length), dtype=np.int32)
+                    sent_vec[0] = input_sent_vec
+
+                    feed_dict = {
+                        self.X2Y_inputs: sent_vec
+                    }
+                    preds = self.sess.run([self.X2Y_test_outputs], feed_dict)
+                    pred_sent = self.utils.vec2sent(preds[0][0])
+                    lines[i] = [line, pred_sent]
+                except Exception as e:
+                    print(e.message)
+            df = pd.DataFrame(
+                lines, columns=['input sentence', 'predicted sentence'])
+            df.to_csv(self.args.feature_file.replace(
+                'txt', 'csv'), index=False)
+
+        else:
+            while(sentence):
+                try:
+                    sentence = input('>')
+                    if sentence == 'quit':
+                        break
+                    #sentence = sentence.split(':')[1]
+                    chinesePat = '[\u4e00-\u9fff]+'
+                    if len(re.findall(chinesePat, sentence)) > 0:
+                        sentence = ' '.join(list(jieba.cut(sentence)))
+                    input_sent_vec = self.utils.sent2id(sentence)
+                    print(input_sent_vec)
+                    sent_vec = np.zeros(
+                        (self.batch_size, self.sequence_length), dtype=np.int32)
+                    sent_vec[0] = input_sent_vec
+
+                    feed_dict = {
+                        self.X2Y_inputs: sent_vec
+                    }
+                    preds = self.sess.run([self.X2Y_test_outputs], feed_dict)
+                    pred_sent = self.utils.vec2sent(preds[0][0])
+                    print(pred_sent)
+                except Exception as e:
+
+                    print(e)
+                    print('sentence', sentence)
 
     def file_test(self):
         line_count = 0
